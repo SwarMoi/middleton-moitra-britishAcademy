@@ -1,0 +1,151 @@
+---
+title: "Numbers-Experment-MML"
+subtitle: Behavioural analysis
+author: Swarnendu Moitra
+execute:
+  echo: true
+  error: false
+  warning: false
+  cache: true
+theme: spacelab  
+format:
+  html:
+    code-fold: true
+    code-tools: true
+---
+Analysis based on Persons experiment: Middleton and Moitra 2023 
+```{r}
+library(tidyverse)
+library("plotrix")
+library(lme4)
+library(lmerTest)
+source('ggplot_theme_Publication-2.R')
+```
+
+```{r}
+# Load data
+df_slet <- read_csv("data/slet.csv")
+df_98zo <- read_csv("data/98zo.csv")
+df_goty <- read_csv("data/goty.csv")
+df_hebw <- read_csv("data/hebw.csv")
+df_ajpl <- read_csv("data/ajpl.csv")
+df_ld3j <- read_csv("data/ld3j.csv")
+
+# Custom Function
+data_cleaning <- function(arg1){
+arg1 <- arg1 %>%
+        select(`Participant Private ID`,`Trial Number`,'Tree Node Key', 'Reaction Time', Correct,`Spreadsheet: display`,Screen, `Task Name`,`Response Type`) %>%
+        rename(Subject = `Participant Private ID`,
+                   Item = `Trial Number`,
+                   Condition = 'Tree Node Key',
+                   RT = 'Reaction Time',
+                   Accuracy = Correct) %>%
+        filter(Screen == "Testing",
+               `Response Type` == "response") %>%
+        mutate(LogRT = log(RT))
+return(arg1)
+}
+
+## Use the custom function to clean the data
+
+df_slet <- data_cleaning(df_slet)
+df_98zo <- data_cleaning(df_98zo)
+df_goty <- data_cleaning(df_goty)
+df_hebw <- data_cleaning(df_hebw)
+df_ajpl <- data_cleaning(df_ajpl)
+df_ld3j <- data_cleaning(df_ld3j)
+
+data <- rbind(df_slet,df_98zo,df_goty,df_hebw,df_ajpl,df_ld3j)
+
+## Create the summary
+data_group <- data %>% group_by(Condition) %>% summarise(RT_mean=mean(RT),RT_SE=std.error(RT), ACC=mean(Accuracy)*100, ACC_SE=std.error(Accuracy)*100)
+
+Data <- data
+summary(Data)
+```
+
+#Stats
+
+```{r}
+HP_data <- data %>% 
+  mutate(
+    Subject = as.factor(Subject),
+    Condition = as.factor(Condition),
+    Item = as.factor(Item)
+    #Cond_Type = as.factor(Cond_Type),
+    #Response = as.factor(Response)
+  )
+str(HP_data)
+```
+
+```{r}
+RT_model_1 <- lmer(LogRT ~ Condition + (1|Subject) + (1|Item), data = HP_data, REML = F)
+summary(RT_model_1)
+```
+
+```{r}
+ACC_model_1 <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
+summary(ACC_model_1)
+```
+
+## Plot
+
+```{r}
+Data$Condition <- as.factor(Data$Condition)
+
+
+RT <- ggplot(Data, aes(x=Condition, y=LogRT)) + 
+  geom_violin(aes(fill = Condition), trim = FALSE,show.legend = FALSE) +
+  ylab("Log RT") + 
+  xlab("Conditions") +
+  
+  # geom_signif(
+  #   comparisons = list(c("Grammatical", "Pseudowords")),
+  #   margin_top = 0.20,
+  #   step_increase = 0.05,
+  #   tip_length = 0.01,
+  #   map_signif_level = TRUE
+  # )+
+  theme_Publication()+
+ 
+  
+  
+  # Add geom_boxplot() to include box plot
+  geom_boxplot(width = 0.2, fill = "white", color = "blue") 
+  
+RT + stat_summary(fun.data=mean_sdl, mult=1, 
+                 geom="pointrange", color="red")
+
+
+
+```
+
+```{r}
+ACC_plot<- ggplot(data_group,
+               aes(x=Condition,y=ACC,fill=Condition)) +
+  
+  # geom_bar function is used to plot bars of barplot
+  geom_bar(stat = "identity", width = 0.7, position = position_dodge(0.7), show.legend = FALSE  )+
+  #scale_x_discrete(limits = Conditions) +  facet_wrap( ~Prefix) +
+  ylab("% Accept") + 
+  xlab("Conditions") +
+  theme_Publication()+
+  coord_cartesian(ylim = c(0, 75)) +
+  # scale_y_continuous(expand = expansion(mult = c(0, 0.05)))+
+  # geom_signif(
+  #   comparisons = list(c("Grammatical", "Pseudowords")),
+  #   margin_top = 0.12,
+  #   step_increase = 0.09,
+  #   tip_length = 0.05,
+  #   annotation = c("***")
+  # )+
+  
+  #geom_errorbar function is used to plot error bars
+  geom_errorbar(aes(ymin=ACC-ACC_SE,
+                    ymax=ACC+ACC_SE,
+                 width=0.3))
+```
+
+```{r}
+ACC_plot
+```
