@@ -15,21 +15,29 @@ format:
 ---
 Analysis based on Persons experiment: Middleton and Moitra 2023 
 ```{r}
-library(tidyverse)
+library("tidyverse")
 library("plotrix")
-library(lme4)
-library(lmerTest)
+library("lme4")
+library("lmerTest")
+library("report")
 source('ggplot_theme_Publication-2.R')
 ```
 
 ```{r}
 # Load data
-df_slet <- read_csv("data/slet.csv")
-df_98zo <- read_csv("data/98zo.csv")
-df_goty <- read_csv("data/goty.csv")
-df_hebw <- read_csv("data/hebw.csv")
-df_ajpl <- read_csv("data/ajpl.csv")
-df_ld3j <- read_csv("data/ld3j.csv")
+df_slet_1 <- read_csv("data/N72/slet.csv")
+df_98zo_1 <- read_csv("data/N72/98zo.csv")
+df_goty_1 <- read_csv("data/N72/goty.csv")
+df_hebw_1 <- read_csv("data/N72/hebw.csv")
+df_ajpl_1 <- read_csv("data/N72/ajpl.csv")
+df_ld3j_1 <- read_csv("data/N72/ld3j.csv")
+
+df_slet_2 <- read_csv("data/Rest/slet.csv")
+df_98zo_2 <- read_csv("data/Rest/98zo.csv")
+df_goty_2 <- read_csv("data/Rest/goty.csv")
+df_hebw_2 <- read_csv("data/Rest/hebw.csv")
+df_ajpl_2 <- read_csv("data/Rest/ajpl.csv")
+df_ld3j_2 <- read_csv("data/Rest/ld3j.csv")
 
 # Custom Function
 data_cleaning <- function(arg1){
@@ -48,14 +56,22 @@ return(arg1)
 
 ## Use the custom function to clean the data
 
-df_slet <- data_cleaning(df_slet)
-df_98zo <- data_cleaning(df_98zo)
-df_goty <- data_cleaning(df_goty)
-df_hebw <- data_cleaning(df_hebw)
-df_ajpl <- data_cleaning(df_ajpl)
-df_ld3j <- data_cleaning(df_ld3j)
+df_slet_1 <- data_cleaning(df_slet_1)
+df_98zo_1 <- data_cleaning(df_98zo_1)
+df_goty_1 <- data_cleaning(df_goty_1)
+df_hebw_1 <- data_cleaning(df_hebw_1)
+df_ajpl_1 <- data_cleaning(df_ajpl_1)
+df_ld3j_1 <- data_cleaning(df_ld3j_1)
 
-data <- rbind(df_slet,df_98zo,df_goty,df_hebw,df_ajpl,df_ld3j)
+df_slet_2 <- data_cleaning(df_slet_2)
+df_98zo_2 <- data_cleaning(df_98zo_2)
+df_goty_2 <- data_cleaning(df_goty_2)
+df_hebw_2 <- data_cleaning(df_hebw_2)
+df_ajpl_2 <- data_cleaning(df_ajpl_2)
+df_ld3j_2 <- data_cleaning(df_ld3j_2)
+
+data <- rbind(df_slet_1,df_98zo_1,df_goty_1,df_hebw_1,df_ajpl_1,df_ld3j_1,
+              df_slet_2,df_98zo_2,df_goty_2,df_hebw_2,df_ajpl_2,df_ld3j_2)
 
 ## Create the summary
 data_group <- data %>% group_by(Condition) %>% summarise(RT_mean=mean(RT),RT_SE=std.error(RT), ACC=mean(Accuracy)*100, ACC_SE=std.error(Accuracy)*100)
@@ -149,3 +165,7 @@ ACC_plot<- ggplot(data_group,
 ```{r}
 ACC_plot
 ```
+```{r}
+report(ACC_model_1)
+```
+
