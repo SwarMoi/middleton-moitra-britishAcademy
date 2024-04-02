@@ -13,7 +13,9 @@ format:
     code-fold: true
     code-tools: true
 ---
-Analysis based on Persons experiment: Middleton and Moitra 2023 
+
+Analysis based on Persons experiment: Middleton and Moitra 2023
+
 ```{r}
 library("tidyverse")
 library("plotrix")
@@ -165,7 +167,7 @@ ACC_plot<- ggplot(data_group,
 ```{r}
 ACC_plot
 ```
+
 ```{r}
 report(ACC_model_1)
 ```
-

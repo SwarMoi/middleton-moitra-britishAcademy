@@ -58,16 +58,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="Numbers-Experment-MML_files/libs/clipboard/clipboard.min.js"></script>
-<script src="Numbers-Experment-MML_files/libs/quarto-html/quarto.js"></script>
-<script src="Numbers-Experment-MML_files/libs/quarto-html/popper.min.js"></script>
-<script src="Numbers-Experment-MML_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="Numbers-Experment-MML_files/libs/quarto-html/anchor.min.js"></script>
-<link href="Numbers-Experment-MML_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="Numbers-Experment-MML_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="Numbers-Experment-MML_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="Numbers-Experment-MML_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="Numbers-Experment-MML_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -213,17 +213,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(HP_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>tibble [9,312 × 10] (S3: tbl_df/tbl/data.frame)
- $ Subject             : Factor w/ 194 levels "9990861","9990870",..: 7 7 7 7 7 7 7 7 7 7 ...
+<pre><code>tibble [10,608 × 10] (S3: tbl_df/tbl/data.frame)
+ $ Subject             : Factor w/ 221 levels "9898448","9898449",..: 13 13 13 13 13 13 13 13 13 13 ...
  $ Item                : Factor w/ 48 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
  $ Condition           : Factor w/ 6 levels "task-98zo","task-ajpl",..: 6 6 6 6 6 6 6 6 6 6 ...
- $ RT                  : num [1:9312] 6311 4171 5421 2202 3117 ...
- $ Accuracy            : num [1:9312] 1 1 0 1 0 0 1 0 1 1 ...
- $ Spreadsheet: display: chr [1:9312] "Testing02" "Testing02" "Testing02" "Testing02" ...
- $ Screen              : chr [1:9312] "Testing" "Testing" "Testing" "Testing" ...
- $ Task Name           : chr [1:9312] "1e-1i B Testing" "1e-1i B Testing" "1e-1i B Testing" "1e-1i B Testing" ...
- $ Response Type       : chr [1:9312] "response" "response" "response" "response" ...
- $ LogRT               : num [1:9312] 8.75 8.34 8.6 7.7 8.04 ...</code></pre>
+ $ RT                  : num [1:10608] 10352 4506 6214 5762 7446 ...
+ $ Accuracy            : num [1:10608] 1 1 1 1 1 1 1 1 1 1 ...
+ $ Spreadsheet: display: chr [1:10608] "Testing02" "Testing02" "Testing02" "Testing02" ...
+ $ Screen              : chr [1:10608] "Testing" "Testing" "Testing" "Testing" ...
+ $ Task Name           : chr [1:10608] "1e-1i B Testing" "1e-1i B Testing" "1e-1i B Testing" "1e-1i B Testing" ...
+ $ Response Type       : chr [1:10608] "response" "response" "response" "response" ...
+ $ LogRT               : num [1:10608] 9.24 8.41 8.73 8.66 8.92 ...</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -239,37 +239,37 @@ Formula: LogRT ~ Condition + (1 | Subject) + (1 | Item)
    Data: HP_data
 
      AIC      BIC   logLik deviance df.resid 
- 18477.3  18541.6  -9229.7  18459.3     9303 
+ 20732.2  20797.6 -10357.1  20714.2    10599 
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--9.3539 -0.5666 -0.0603  0.5101  7.2527 
+-9.6906 -0.5697 -0.0638  0.5104  7.3289 
 
 Random effects:
  Groups   Name        Variance Std.Dev.
- Subject  (Intercept) 0.7311   0.8550  
- Item     (Intercept) 0.1329   0.3646  
- Residual             0.3785   0.6152  
-Number of obs: 9312, groups:  Subject, 194; Item, 48
+ Subject  (Intercept) 0.7382   0.8592  
+ Item     (Intercept) 0.1277   0.3573  
+ Residual             0.3679   0.6066  
+Number of obs: 10608, groups:  Subject, 221; Item, 48
 
 Fixed effects:
-                    Estimate Std. Error        df t value Pr(&gt;|t|)    
-(Intercept)          8.16355    0.17980 223.40772  45.405   &lt;2e-16 ***
-Conditiontask-ajpl  -0.09513    0.23107 193.82226  -0.412    0.681    
-Conditiontask-goty  -0.30508    0.21714 193.82226  -1.405    0.162    
-Conditiontask-hebw  -0.13665    0.22793 193.82226  -0.600    0.550    
-Conditiontask-ld3j  -0.13727    0.22510 193.82226  -0.610    0.543    
-Conditiontask-slet  -0.21564    0.23653 193.82226  -0.912    0.363    
+                   Estimate Std. Error       df t value Pr(&gt;|t|)    
+(Intercept)          8.1802     0.1712 254.7636  47.790   &lt;2e-16 ***
+Conditiontask-ajpl  -0.1761     0.2151 220.8044  -0.819   0.4139    
+Conditiontask-goty  -0.3840     0.2079 220.8044  -1.847   0.0661 .  
+Conditiontask-hebw  -0.1464     0.2151 220.8044  -0.680   0.4969    
+Conditiontask-ld3j  -0.1779     0.2151 220.8044  -0.827   0.4091    
+Conditiontask-slet  -0.1946     0.2204 220.8044  -0.883   0.3783    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Correlation of Fixed Effects:
             (Intr) Cndtntsk-j Cndtntsk-g Cndtntsk-h Cndt-3
-Cndtntsk-jp -0.711                                        
-Cndtntsk-gt -0.757  0.589                                 
-Cndtntsk-hb -0.721  0.561      0.597                      
-Cndtntsk-l3 -0.730  0.568      0.605      0.576           
-Cndtntsk-sl -0.695  0.541      0.575      0.548      0.555</code></pre>
+Cndtntsk-jp -0.724                                        
+Cndtntsk-gt -0.749  0.596                                 
+Cndtntsk-hb -0.724  0.576      0.596                      
+Cndtntsk-l3 -0.724  0.576      0.596      0.576           
+Cndtntsk-sl -0.706  0.562      0.581      0.562      0.562</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -286,36 +286,36 @@ Formula: Accuracy ~ Condition + (1 | Subject) + (1 | Item)
    Data: HP_data
 
      AIC      BIC   logLik deviance df.resid 
- 11865.4  11922.5  -5924.7  11849.4     9304 
+ 13403.1  13461.3  -6693.6  13387.1    10600 
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--2.9271 -1.0388  0.5484  0.7958  1.5719 
+-3.1499 -1.0355  0.5338  0.7934  1.5746 
 
 Random effects:
- Groups  Name        Variance Std.Dev.
- Subject (Intercept) 0.450357 0.67109 
- Item    (Intercept) 0.003344 0.05783 
-Number of obs: 9312, groups:  Subject, 194; Item, 48
+ Groups  Name        Variance  Std.Dev.
+ Subject (Intercept) 0.4869742 0.69784 
+ Item    (Intercept) 0.0009203 0.03034 
+Number of obs: 10608, groups:  Subject, 221; Item, 48
 
 Fixed effects:
                    Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)         0.53957    0.14840   3.636 0.000277 ***
-Conditiontask-ajpl -0.06980    0.19937  -0.350 0.726260    
-Conditiontask-goty -0.06935    0.18708  -0.371 0.710864    
-Conditiontask-hebw  0.25970    0.19698   1.318 0.187357    
-Conditiontask-ld3j -0.02677    0.19406  -0.138 0.890265    
-Conditiontask-slet  0.09419    0.20419   0.461 0.644607    
+(Intercept)          0.6338     0.1453   4.361 1.29e-05 ***
+Conditiontask-ajpl  -0.2003     0.1911  -1.048    0.295    
+Conditiontask-goty  -0.1563     0.1846  -0.847    0.397    
+Conditiontask-hebw   0.2270     0.1918   1.183    0.237    
+Conditiontask-ld3j  -0.1341     0.1911  -0.702    0.483    
+Conditiontask-slet   0.1027     0.1964   0.523    0.601    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Correlation of Fixed Effects:
             (Intr) Cndtntsk-j Cndtntsk-g Cndtntsk-h Cndt-3
-Cndtntsk-jp -0.742                                        
-Cndtntsk-gt -0.790  0.589                                 
-Cndtntsk-hb -0.751  0.559      0.596                      
-Cndtntsk-l3 -0.762  0.567      0.605      0.574           
-Cndtntsk-sl -0.724  0.539      0.575      0.546      0.554</code></pre>
+Cndtntsk-jp -0.759                                        
+Cndtntsk-gt -0.786  0.598                                 
+Cndtntsk-hb -0.756  0.575      0.595                      
+Cndtntsk-l3 -0.759  0.577      0.598      0.575           
+Cndtntsk-sl -0.738  0.562      0.581      0.560      0.562</code></pre>
 </div>
 </div>
 <section id="plot" class="level2">
@@ -351,7 +351,7 @@ Cndtntsk-sl -0.724  0.539      0.575      0.546      0.554</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Numbers-Experment-MML_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -392,7 +392,7 @@ Cndtntsk-sl -0.724  0.539      0.575      0.546      0.554</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Numbers-Experment-MML_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -406,26 +406,26 @@ Cndtntsk-sl -0.724  0.539      0.575      0.546      0.554</code></pre>
 <pre><code>We fitted a logistic mixed model (estimated using ML and Nelder-Mead optimizer)
 to predict Accuracy with Condition (formula: Accuracy ~ Condition). The model
 included Subject as random effects (formula: list(~1 | Subject, ~1 | Item)).
-The model's total explanatory power is weak (conditional R2 = 0.12) and the
-part related to the fixed effects alone (marginal R2) is of 3.72e-03. The
-model's intercept, corresponding to Condition = task-98zo, is at 0.54 (95% CI
-[0.25, 0.83], p &lt; .001). Within this model:
+The model's total explanatory power is moderate (conditional R2 = 0.13) and the
+part related to the fixed effects alone (marginal R2) is of 6.38e-03. The
+model's intercept, corresponding to Condition = task-98zo, is at 0.63 (95% CI
+[0.35, 0.92], p &lt; .001). Within this model:
 
   - The effect of Condition [task-ajpl] is statistically non-significant and
-negative (beta = -0.07, 95% CI [-0.46, 0.32], p = 0.726; Std. beta = -0.07, 95%
-CI [-0.46, 0.32])
+negative (beta = -0.20, 95% CI [-0.57, 0.17], p = 0.295; Std. beta = -0.20, 95%
+CI [-0.57, 0.17])
   - The effect of Condition [task-goty] is statistically non-significant and
-negative (beta = -0.07, 95% CI [-0.44, 0.30], p = 0.711; Std. beta = -0.07, 95%
-CI [-0.44, 0.30])
+negative (beta = -0.16, 95% CI [-0.52, 0.21], p = 0.397; Std. beta = -0.16, 95%
+CI [-0.52, 0.21])
   - The effect of Condition [task-hebw] is statistically non-significant and
-positive (beta = 0.26, 95% CI [-0.13, 0.65], p = 0.187; Std. beta = 0.26, 95%
-CI [-0.13, 0.65])
+positive (beta = 0.23, 95% CI [-0.15, 0.60], p = 0.237; Std. beta = 0.23, 95%
+CI [-0.15, 0.60])
   - The effect of Condition [task-ld3j] is statistically non-significant and
-negative (beta = -0.03, 95% CI [-0.41, 0.35], p = 0.890; Std. beta = -0.03, 95%
-CI [-0.41, 0.35])
+negative (beta = -0.13, 95% CI [-0.51, 0.24], p = 0.483; Std. beta = -0.13, 95%
+CI [-0.51, 0.24])
   - The effect of Condition [task-slet] is statistically non-significant and
-positive (beta = 0.09, 95% CI [-0.31, 0.49], p = 0.645; Std. beta = 0.09, 95%
-CI [-0.31, 0.49])
+positive (beta = 0.10, 95% CI [-0.28, 0.49], p = 0.601; Std. beta = 0.10, 95%
+CI [-0.28, 0.49])
 
 Standardized parameters were obtained by fitting the model on a standardized
 version of the dataset. 95% Confidence Intervals (CIs) and p-values were
@@ -891,161 +891,164 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>Analysis based on Persons experiment: Middleton and Moitra 2023 </span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyverse"</span>)</span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"plotrix"</span>)</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"lme4"</span>)</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"lmerTest"</span>)</span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"report"</span>)</span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">'ggplot_theme_Publication-2.R'</span>)</span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data</span></span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>df_slet_1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/N72/slet.csv"</span>)</span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>df_98zo_1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/N72/98zo.csv"</span>)</span>
-<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>df_goty_1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/N72/goty.csv"</span>)</span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>df_hebw_1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/N72/hebw.csv"</span>)</span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>df_ajpl_1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/N72/ajpl.csv"</span>)</span>
-<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>df_ld3j_1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/N72/ld3j.csv"</span>)</span>
-<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>df_slet_2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Rest/slet.csv"</span>)</span>
-<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>df_98zo_2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Rest/98zo.csv"</span>)</span>
-<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>df_goty_2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Rest/goty.csv"</span>)</span>
-<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>df_hebw_2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Rest/hebw.csv"</span>)</span>
-<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>df_ajpl_2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Rest/ajpl.csv"</span>)</span>
-<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>df_ld3j_2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Rest/ld3j.csv"</span>)</span>
-<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom Function</span></span>
-<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>data_cleaning <span class="ot">&lt;-</span> <span class="cf">function</span>(arg1){</span>
-<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>arg1 <span class="ot">&lt;-</span> arg1 <span class="sc">%&gt;%</span></span>
-<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(<span class="st">`</span><span class="at">Participant Private ID</span><span class="st">`</span>,<span class="st">`</span><span class="at">Trial Number</span><span class="st">`</span>,<span class="st">'Tree Node Key'</span>, <span class="st">'Reaction Time'</span>, Correct,<span class="st">`</span><span class="at">Spreadsheet: display</span><span class="st">`</span>,Screen, <span class="st">`</span><span class="at">Task Name</span><span class="st">`</span>,<span class="st">`</span><span class="at">Response Type</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rename</span>(<span class="at">Subject =</span> <span class="st">`</span><span class="at">Participant Private ID</span><span class="st">`</span>,</span>
-<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Item =</span> <span class="st">`</span><span class="at">Trial Number</span><span class="st">`</span>,</span>
-<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Condition =</span> <span class="st">'Tree Node Key'</span>,</span>
-<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>                   <span class="at">RT =</span> <span class="st">'Reaction Time'</span>,</span>
-<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Accuracy =</span> Correct) <span class="sc">%&gt;%</span></span>
-<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(Screen <span class="sc">==</span> <span class="st">"Testing"</span>,</span>
-<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a>               <span class="st">`</span><span class="at">Response Type</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"response"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">LogRT =</span> <span class="fu">log</span>(RT))</span>
-<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span>(arg1)</span>
-<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a><span class="do">## Use the custom function to clean the data</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>Analysis based on Persons experiment: Middleton and Moitra 2023</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyverse"</span>)</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"plotrix"</span>)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"lme4"</span>)</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"lmerTest"</span>)</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"report"</span>)</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">'ggplot_theme_Publication-2.R'</span>)</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data</span></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>df_slet_1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/N72/slet.csv"</span>)</span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>df_98zo_1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/N72/98zo.csv"</span>)</span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>df_goty_1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/N72/goty.csv"</span>)</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>df_hebw_1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/N72/hebw.csv"</span>)</span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>df_ajpl_1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/N72/ajpl.csv"</span>)</span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>df_ld3j_1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/N72/ld3j.csv"</span>)</span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>df_slet_2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Rest/slet.csv"</span>)</span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>df_98zo_2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Rest/98zo.csv"</span>)</span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>df_goty_2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Rest/goty.csv"</span>)</span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>df_hebw_2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Rest/hebw.csv"</span>)</span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a>df_ajpl_2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Rest/ajpl.csv"</span>)</span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>df_ld3j_2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Rest/ld3j.csv"</span>)</span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom Function</span></span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>data_cleaning <span class="ot">&lt;-</span> <span class="cf">function</span>(arg1){</span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>arg1 <span class="ot">&lt;-</span> arg1 <span class="sc">%&gt;%</span></span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(<span class="st">`</span><span class="at">Participant Private ID</span><span class="st">`</span>,<span class="st">`</span><span class="at">Trial Number</span><span class="st">`</span>,<span class="st">'Tree Node Key'</span>, <span class="st">'Reaction Time'</span>, Correct,<span class="st">`</span><span class="at">Spreadsheet: display</span><span class="st">`</span>,Screen, <span class="st">`</span><span class="at">Task Name</span><span class="st">`</span>,<span class="st">`</span><span class="at">Response Type</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rename</span>(<span class="at">Subject =</span> <span class="st">`</span><span class="at">Participant Private ID</span><span class="st">`</span>,</span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Item =</span> <span class="st">`</span><span class="at">Trial Number</span><span class="st">`</span>,</span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Condition =</span> <span class="st">'Tree Node Key'</span>,</span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a>                   <span class="at">RT =</span> <span class="st">'Reaction Time'</span>,</span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Accuracy =</span> Correct) <span class="sc">%&gt;%</span></span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(Screen <span class="sc">==</span> <span class="st">"Testing"</span>,</span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a>               <span class="st">`</span><span class="at">Response Type</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"response"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">LogRT =</span> <span class="fu">log</span>(RT))</span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span>(arg1)</span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a>df_slet_1 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_slet_1)</span>
-<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a>df_98zo_1 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_98zo_1)</span>
-<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a>df_goty_1 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_goty_1)</span>
-<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a>df_hebw_1 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_hebw_1)</span>
-<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a>df_ajpl_1 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_ajpl_1)</span>
-<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a>df_ld3j_1 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_ld3j_1)</span>
-<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a>df_slet_2 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_slet_2)</span>
-<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a>df_98zo_2 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_98zo_2)</span>
-<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a>df_goty_2 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_goty_2)</span>
-<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a>df_hebw_2 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_hebw_2)</span>
-<span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a>df_ajpl_2 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_ajpl_2)</span>
-<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a>df_ld3j_2 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_ld3j_2)</span>
-<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df_slet_1,df_98zo_1,df_goty_1,df_hebw_1,df_ajpl_1,df_ld3j_1,</span>
-<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a>              df_slet_2,df_98zo_2,df_goty_2,df_hebw_2,df_ajpl_2,df_ld3j_2)</span>
-<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a><span class="do">## Create the summary</span></span>
-<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a>data_group <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Condition) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">RT_mean=</span><span class="fu">mean</span>(RT),<span class="at">RT_SE=</span><span class="fu">std.error</span>(RT), <span class="at">ACC=</span><span class="fu">mean</span>(Accuracy)<span class="sc">*</span><span class="dv">100</span>, <span class="at">ACC_SE=</span><span class="fu">std.error</span>(Accuracy)<span class="sc">*</span><span class="dv">100</span>)</span>
-<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">&lt;-</span> data</span>
-<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Data)</span>
-<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a>#Stats</span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a><span class="do">## Use the custom function to clean the data</span></span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a>df_slet_1 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_slet_1)</span>
+<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a>df_98zo_1 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_98zo_1)</span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a>df_goty_1 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_goty_1)</span>
+<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a>df_hebw_1 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_hebw_1)</span>
+<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a>df_ajpl_1 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_ajpl_1)</span>
+<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a>df_ld3j_1 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_ld3j_1)</span>
+<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a>df_slet_2 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_slet_2)</span>
+<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a>df_98zo_2 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_98zo_2)</span>
+<span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a>df_goty_2 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_goty_2)</span>
+<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a>df_hebw_2 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_hebw_2)</span>
+<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a>df_ajpl_2 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_ajpl_2)</span>
+<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>df_ld3j_2 <span class="ot">&lt;-</span> <span class="fu">data_cleaning</span>(df_ld3j_2)</span>
+<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df_slet_1,df_98zo_1,df_goty_1,df_hebw_1,df_ajpl_1,df_ld3j_1,</span>
+<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a>              df_slet_2,df_98zo_2,df_goty_2,df_hebw_2,df_ajpl_2,df_ld3j_2)</span>
+<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a><span class="do">## Create the summary</span></span>
+<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a>data_group <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Condition) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">RT_mean=</span><span class="fu">mean</span>(RT),<span class="at">RT_SE=</span><span class="fu">std.error</span>(RT), <span class="at">ACC=</span><span class="fu">mean</span>(Accuracy)<span class="sc">*</span><span class="dv">100</span>, <span class="at">ACC_SE=</span><span class="fu">std.error</span>(Accuracy)<span class="sc">*</span><span class="dv">100</span>)</span>
+<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">&lt;-</span> data</span>
+<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Data)</span>
+<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-88"><a href="#cb15-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-91"><a href="#cb15-91" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a>HP_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
-<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a>    <span class="at">Subject =</span> <span class="fu">as.factor</span>(Subject),</span>
-<span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a>    <span class="at">Condition =</span> <span class="fu">as.factor</span>(Condition),</span>
-<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a>    <span class="at">Item =</span> <span class="fu">as.factor</span>(Item)</span>
-<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Cond_Type = as.factor(Cond_Type),</span></span>
-<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Response = as.factor(Response)</span></span>
-<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(HP_data)</span>
-<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a>RT_model_1 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(LogRT <span class="sc">~</span> Condition <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subject) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Item), <span class="at">data =</span> HP_data, <span class="at">REML =</span> F)</span>
-<span id="cb15-107"><a href="#cb15-107" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(RT_model_1)</span>
-<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-112"><a href="#cb15-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-113"><a href="#cb15-113" aria-hidden="true" tabindex="-1"></a>ACC_model_1 <span class="ot">&lt;-</span> <span class="fu">glmer</span>(Accuracy <span class="sc">~</span> Condition <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subject) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Item), <span class="at">data =</span> HP_data, <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
-<span id="cb15-114"><a href="#cb15-114" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ACC_model_1)</span>
-<span id="cb15-115"><a href="#cb15-115" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-116"><a href="#cb15-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-117"><a href="#cb15-117" aria-hidden="true" tabindex="-1"></a><span class="fu">## Plot</span></span>
+<span id="cb15-89"><a href="#cb15-89" aria-hidden="true" tabindex="-1"></a>#Stats</span>
+<span id="cb15-90"><a href="#cb15-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a>HP_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a>    <span class="at">Subject =</span> <span class="fu">as.factor</span>(Subject),</span>
+<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a>    <span class="at">Condition =</span> <span class="fu">as.factor</span>(Condition),</span>
+<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a>    <span class="at">Item =</span> <span class="fu">as.factor</span>(Item)</span>
+<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Cond_Type = as.factor(Cond_Type),</span></span>
+<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Response = as.factor(Response)</span></span>
+<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(HP_data)</span>
+<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-107"><a href="#cb15-107" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a>RT_model_1 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(LogRT <span class="sc">~</span> Condition <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subject) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Item), <span class="at">data =</span> HP_data, <span class="at">REML =</span> F)</span>
+<span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(RT_model_1)</span>
+<span id="cb15-110"><a href="#cb15-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-111"><a href="#cb15-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-114"><a href="#cb15-114" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-115"><a href="#cb15-115" aria-hidden="true" tabindex="-1"></a>ACC_model_1 <span class="ot">&lt;-</span> <span class="fu">glmer</span>(Accuracy <span class="sc">~</span> Condition <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subject) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Item), <span class="at">data =</span> HP_data, <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb15-116"><a href="#cb15-116" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ACC_model_1)</span>
+<span id="cb15-117"><a href="#cb15-117" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-118"><a href="#cb15-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-121"><a href="#cb15-121" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-122"><a href="#cb15-122" aria-hidden="true" tabindex="-1"></a>Data<span class="sc">$</span>Condition <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(Data<span class="sc">$</span>Condition)</span>
-<span id="cb15-123"><a href="#cb15-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-124"><a href="#cb15-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-125"><a href="#cb15-125" aria-hidden="true" tabindex="-1"></a>RT <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(Data, <span class="fu">aes</span>(<span class="at">x=</span>Condition, <span class="at">y=</span>LogRT)) <span class="sc">+</span> </span>
-<span id="cb15-126"><a href="#cb15-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Condition), <span class="at">trim =</span> <span class="cn">FALSE</span>,<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb15-127"><a href="#cb15-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Log RT"</span>) <span class="sc">+</span> </span>
-<span id="cb15-128"><a href="#cb15-128" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Conditions"</span>) <span class="sc">+</span></span>
-<span id="cb15-129"><a href="#cb15-129" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-130"><a href="#cb15-130" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_signif(</span></span>
-<span id="cb15-131"><a href="#cb15-131" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   comparisons = list(c("Grammatical", "Pseudowords")),</span></span>
-<span id="cb15-132"><a href="#cb15-132" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   margin_top = 0.20,</span></span>
-<span id="cb15-133"><a href="#cb15-133" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   step_increase = 0.05,</span></span>
-<span id="cb15-134"><a href="#cb15-134" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   tip_length = 0.01,</span></span>
-<span id="cb15-135"><a href="#cb15-135" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   map_signif_level = TRUE</span></span>
-<span id="cb15-136"><a href="#cb15-136" aria-hidden="true" tabindex="-1"></a>  <span class="co"># )+</span></span>
-<span id="cb15-137"><a href="#cb15-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_Publication</span>()<span class="sc">+</span></span>
-<span id="cb15-138"><a href="#cb15-138" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb15-139"><a href="#cb15-139" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-140"><a href="#cb15-140" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-141"><a href="#cb15-141" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add geom_boxplot() to include box plot</span></span>
-<span id="cb15-142"><a href="#cb15-142" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">color =</span> <span class="st">"blue"</span>) </span>
-<span id="cb15-143"><a href="#cb15-143" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-144"><a href="#cb15-144" aria-hidden="true" tabindex="-1"></a>RT <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">fun.data=</span>mean_sdl, <span class="at">mult=</span><span class="dv">1</span>, </span>
-<span id="cb15-145"><a href="#cb15-145" aria-hidden="true" tabindex="-1"></a>                 <span class="at">geom=</span><span class="st">"pointrange"</span>, <span class="at">color=</span><span class="st">"red"</span>)</span>
-<span id="cb15-146"><a href="#cb15-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-147"><a href="#cb15-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-119"><a href="#cb15-119" aria-hidden="true" tabindex="-1"></a><span class="fu">## Plot</span></span>
+<span id="cb15-120"><a href="#cb15-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-123"><a href="#cb15-123" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-124"><a href="#cb15-124" aria-hidden="true" tabindex="-1"></a>Data<span class="sc">$</span>Condition <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(Data<span class="sc">$</span>Condition)</span>
+<span id="cb15-125"><a href="#cb15-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-126"><a href="#cb15-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-127"><a href="#cb15-127" aria-hidden="true" tabindex="-1"></a>RT <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(Data, <span class="fu">aes</span>(<span class="at">x=</span>Condition, <span class="at">y=</span>LogRT)) <span class="sc">+</span> </span>
+<span id="cb15-128"><a href="#cb15-128" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Condition), <span class="at">trim =</span> <span class="cn">FALSE</span>,<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb15-129"><a href="#cb15-129" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Log RT"</span>) <span class="sc">+</span> </span>
+<span id="cb15-130"><a href="#cb15-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Conditions"</span>) <span class="sc">+</span></span>
+<span id="cb15-131"><a href="#cb15-131" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-132"><a href="#cb15-132" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_signif(</span></span>
+<span id="cb15-133"><a href="#cb15-133" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   comparisons = list(c("Grammatical", "Pseudowords")),</span></span>
+<span id="cb15-134"><a href="#cb15-134" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   margin_top = 0.20,</span></span>
+<span id="cb15-135"><a href="#cb15-135" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   step_increase = 0.05,</span></span>
+<span id="cb15-136"><a href="#cb15-136" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   tip_length = 0.01,</span></span>
+<span id="cb15-137"><a href="#cb15-137" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   map_signif_level = TRUE</span></span>
+<span id="cb15-138"><a href="#cb15-138" aria-hidden="true" tabindex="-1"></a>  <span class="co"># )+</span></span>
+<span id="cb15-139"><a href="#cb15-139" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_Publication</span>()<span class="sc">+</span></span>
+<span id="cb15-140"><a href="#cb15-140" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb15-141"><a href="#cb15-141" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-142"><a href="#cb15-142" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-143"><a href="#cb15-143" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add geom_boxplot() to include box plot</span></span>
+<span id="cb15-144"><a href="#cb15-144" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">color =</span> <span class="st">"blue"</span>) </span>
+<span id="cb15-145"><a href="#cb15-145" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-146"><a href="#cb15-146" aria-hidden="true" tabindex="-1"></a>RT <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">fun.data=</span>mean_sdl, <span class="at">mult=</span><span class="dv">1</span>, </span>
+<span id="cb15-147"><a href="#cb15-147" aria-hidden="true" tabindex="-1"></a>                 <span class="at">geom=</span><span class="st">"pointrange"</span>, <span class="at">color=</span><span class="st">"red"</span>)</span>
 <span id="cb15-148"><a href="#cb15-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-149"><a href="#cb15-149" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-149"><a href="#cb15-149" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-150"><a href="#cb15-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-153"><a href="#cb15-153" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-154"><a href="#cb15-154" aria-hidden="true" tabindex="-1"></a>ACC_plot<span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data_group,</span>
-<span id="cb15-155"><a href="#cb15-155" aria-hidden="true" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">x=</span>Condition,<span class="at">y=</span>ACC,<span class="at">fill=</span>Condition)) <span class="sc">+</span></span>
-<span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_bar function is used to plot bars of barplot</span></span>
-<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="fl">0.7</span>), <span class="at">show.legend =</span> <span class="cn">FALSE</span>  )<span class="sc">+</span></span>
-<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a>  <span class="co">#scale_x_discrete(limits = Conditions) +  facet_wrap( ~Prefix) +</span></span>
-<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"% Accept"</span>) <span class="sc">+</span> </span>
-<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Conditions"</span>) <span class="sc">+</span></span>
-<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_Publication</span>()<span class="sc">+</span></span>
-<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">75</span>)) <span class="sc">+</span></span>
-<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_y_continuous(expand = expansion(mult = c(0, 0.05)))+</span></span>
-<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_signif(</span></span>
-<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   comparisons = list(c("Grammatical", "Pseudowords")),</span></span>
-<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   margin_top = 0.12,</span></span>
-<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   step_increase = 0.09,</span></span>
-<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   tip_length = 0.05,</span></span>
-<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   annotation = c("***")</span></span>
-<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a>  <span class="co"># )+</span></span>
-<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_errorbar function is used to plot error bars</span></span>
-<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>ACC<span class="sc">-</span>ACC_SE,</span>
-<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax=</span>ACC<span class="sc">+</span>ACC_SE,</span>
-<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a>                 <span class="at">width=</span><span class="fl">0.3</span>))</span>
-<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a>ACC_plot</span>
-<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a><span class="fu">report</span>(ACC_model_1)</span>
-<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-151"><a href="#cb15-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-152"><a href="#cb15-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-155"><a href="#cb15-155" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a>ACC_plot<span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data_group,</span>
+<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">x=</span>Condition,<span class="at">y=</span>ACC,<span class="at">fill=</span>Condition)) <span class="sc">+</span></span>
+<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_bar function is used to plot bars of barplot</span></span>
+<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="fl">0.7</span>), <span class="at">show.legend =</span> <span class="cn">FALSE</span>  )<span class="sc">+</span></span>
+<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a>  <span class="co">#scale_x_discrete(limits = Conditions) +  facet_wrap( ~Prefix) +</span></span>
+<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"% Accept"</span>) <span class="sc">+</span> </span>
+<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Conditions"</span>) <span class="sc">+</span></span>
+<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_Publication</span>()<span class="sc">+</span></span>
+<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">75</span>)) <span class="sc">+</span></span>
+<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_y_continuous(expand = expansion(mult = c(0, 0.05)))+</span></span>
+<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_signif(</span></span>
+<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   comparisons = list(c("Grammatical", "Pseudowords")),</span></span>
+<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   margin_top = 0.12,</span></span>
+<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   step_increase = 0.09,</span></span>
+<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   tip_length = 0.05,</span></span>
+<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   annotation = c("***")</span></span>
+<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a>  <span class="co"># )+</span></span>
+<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_errorbar function is used to plot error bars</span></span>
+<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>ACC<span class="sc">-</span>ACC_SE,</span>
+<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax=</span>ACC<span class="sc">+</span>ACC_SE,</span>
+<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a>                 <span class="at">width=</span><span class="fl">0.3</span>))</span>
+<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a>ACC_plot</span>
+<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-189"><a href="#cb15-189" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a><span class="fu">report</span>(ACC_model_1)</span>
+<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
