@@ -175,6 +175,7 @@ Data$Condition <- as.factor(Data$Condition)
 ```
 
 ```{r}
+library(ggsignif)
 ACC_plot<- ggplot(data_group,
                aes(x=Condition,y=ACC,fill=Condition)) +
   
@@ -197,9 +198,15 @@ ACC_plot<- ggplot(data_group,
     margin_top = 0.12,
     step_increase = 0.09,
     tip_length = 0.05,
-    annotation = c("***")
+    annotation = c("** 0.0397")
   )+
-
+  geom_signif(
+    comparisons = list(c("1e-3", "1i-2")),
+    margin_top = 0.30,
+    step_increase = 0.09,
+    tip_length = 0.05,
+    annotation = c("** 0.0311")
+  )+
   #geom_errorbar function is used to plot error bars
   geom_errorbar(aes(ymin=ACC-ACC_SE,
                     ymax=ACC+ACC_SE,
@@ -218,3 +225,43 @@ report(ACC_model_1)
 BAN_ACC_Model1.emm <- emmeans(ACC_model_1, ~ Condition, lmer.df = "asymp")
 pairs(BAN_ACC_Model1.emm, simple = "each")
 ```
+```{r}
+# library("ggdist")
+# ACC_plot2 <- ggplot(HP_data,aes(x = factor(Condition), y = Accuracy, fill = factor(Condition))) +
+#  # ggplot(data_group,
+#  #               aes(x=Condition,y=ACC,fill=Condition)) +
+#   ylab("% Accept") + 
+#   xlab("Conditions") +
+#   geom_text(aes(label=round(Accuracy)),vjust=1.6, color="white", size=3.5) +
+#   theme_Publication()+
+#   #theme_minimal() +
+#   #theme_clean() +
+#   #theme_wsj() +
+#   theme_tufte() +
+#   geom_hline(aes(yintercept=50), colour="#990000", linetype="dashed") +
+#   coord_cartesian(ylim = c(0, 75)) +
+# stat_halfeye(
+#     # adjust bandwidth
+#     adjust = 0.5,
+#     # move to the right
+#     justification = -0.2,
+#     # remove the slub interval
+#     .width = 0,
+#     point_colour = NA
+#   ) +
+#   geom_boxplot(
+#     width = 0.12,
+#     # removing outliers
+#     outlier.color = NA,
+#     alpha = 0.5
+#   ) +
+#   stat_dots(
+#     # ploting on left side
+#     side = "left",
+#     # adjusting position
+#     justification = 1.1,
+#     # adjust grouping (binning) of observations
+#     binwidth = 0.25
+#   )
+```
+
