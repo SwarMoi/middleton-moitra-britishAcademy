@@ -6,12 +6,17 @@ execute:
   echo: true
   error: false
   warning: false
-  cache: true
+  #cache: true
 theme: spacelab  
 format:
   html:
     code-fold: true
     code-tools: true
+    embed-resources: true
+  # pdf:
+  #   toc: true
+  #   number-sections: true
+  #   colorlinks: true
 ---
 
 Analysis based on Persons experiment: Middleton and Moitra 2023
@@ -22,6 +27,9 @@ library("plotrix")
 library("lme4")
 library("lmerTest")
 library("report")
+library("Hmisc")
+library("multcomp")
+library("emmeans")
 source('ggplot_theme_Publication-2.R')
 ```
 
@@ -41,18 +49,27 @@ df_hebw_2 <- read_csv("data/Rest/hebw.csv")
 df_ajpl_2 <- read_csv("data/Rest/ajpl.csv")
 df_ld3j_2 <- read_csv("data/Rest/ld3j.csv")
 
+df_slet_3 <- read_csv("data/Rest_new/slet.csv")
+df_98zo_3 <- read_csv("data/Rest_new/98zo.csv")
+df_goty_3 <- read_csv("data/Rest_new/goty.csv")
+df_hebw_3 <- read_csv("data/Rest_new/hebw.csv")
+df_ajpl_3 <- read_csv("data/Rest_new/ajpl.csv")
+df_ld3j_3 <- read_csv("data/Rest_new/ld3j.csv")
+
 # Custom Function
 data_cleaning <- function(arg1){
+arg1 <- arg1 
 arg1 <- arg1 %>%
-        select(`Participant Private ID`,`Trial Number`,'Tree Node Key', 'Reaction Time', Correct,`Spreadsheet: display`,Screen, `Task Name`,`Response Type`) %>%
+        dplyr::select(`Participant Private ID`,`Trial Number`,'Tree Node Key', 'Reaction Time', Correct,`Spreadsheet: display`,Screen, `Task Name`,`Response Type`) %>%
         rename(Subject = `Participant Private ID`,
                    Item = `Trial Number`,
-                   Condition = 'Tree Node Key',
+                   Condition = 'Task Name',
                    RT = 'Reaction Time',
                    Accuracy = Correct) %>%
         filter(Screen == "Testing",
                `Response Type` == "response") %>%
-        mutate(LogRT = log(RT))
+        mutate(LogRT = log(RT),
+        Condition = gsub(" B Testing", "", Condition))
 return(arg1)
 }
 
@@ -72,8 +89,17 @@ df_hebw_2 <- data_cleaning(df_hebw_2)
 df_ajpl_2 <- data_cleaning(df_ajpl_2)
 df_ld3j_2 <- data_cleaning(df_ld3j_2)
 
+df_slet_3 <- data_cleaning(df_slet_3)
+df_98zo_3 <- data_cleaning(df_98zo_3)
+df_goty_3 <- data_cleaning(df_goty_3)
+df_hebw_3 <- data_cleaning(df_hebw_3)
+df_ajpl_3 <- data_cleaning(df_ajpl_3)
+df_ld3j_3 <- data_cleaning(df_ld3j_3)
+
 data <- rbind(df_slet_1,df_98zo_1,df_goty_1,df_hebw_1,df_ajpl_1,df_ld3j_1,
-              df_slet_2,df_98zo_2,df_goty_2,df_hebw_2,df_ajpl_2,df_ld3j_2)
+              df_slet_2,df_98zo_2,df_goty_2,df_hebw_2,df_ajpl_2,df_ld3j_2,
+              df_slet_3,df_98zo_3,df_goty_3,df_hebw_3,df_ajpl_3,df_ld3j_3
+              )
 
 ## Create the summary
 data_group <- data %>% group_by(Condition) %>% summarise(RT_mean=mean(RT),RT_SE=std.error(RT), ACC=mean(Accuracy)*100, ACC_SE=std.error(Accuracy)*100)
@@ -94,6 +120,7 @@ HP_data <- data %>%
     #Response = as.factor(Response)
   )
 str(HP_data)
+HP_data$Condition <-relevel(HP_data$Condition, ref="1e-1i")
 ```
 
 ```{r}
@@ -106,33 +133,42 @@ ACC_model_1 <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_da
 summary(ACC_model_1)
 ```
 
+```{r}
+ACC_model_2 <- glmer(Accuracy ~ Condition + (1|Subject) , data = HP_data, family = "binomial")
+summary(ACC_model_2)
+```
+
+```{r}
+anova(ACC_model_1,ACC_model_2)
+```
+
 ## Plot
 
 ```{r}
 Data$Condition <- as.factor(Data$Condition)
 
 
-RT <- ggplot(Data, aes(x=Condition, y=LogRT)) + 
-  geom_violin(aes(fill = Condition), trim = FALSE,show.legend = FALSE) +
-  ylab("Log RT") + 
-  xlab("Conditions") +
-  
-  # geom_signif(
-  #   comparisons = list(c("Grammatical", "Pseudowords")),
-  #   margin_top = 0.20,
-  #   step_increase = 0.05,
-  #   tip_length = 0.01,
-  #   map_signif_level = TRUE
-  # )+
-  theme_Publication()+
- 
-  
-  
-  # Add geom_boxplot() to include box plot
-  geom_boxplot(width = 0.2, fill = "white", color = "blue") 
-  
-RT + stat_summary(fun.data=mean_sdl, mult=1, 
-                 geom="pointrange", color="red")
+# RT <- ggplot(Data, aes(x=Condition, y=LogRT)) + 
+#   geom_violin(aes(fill = Condition), trim = FALSE,show.legend = FALSE) +
+#   ylab("Log RT") + 
+#   xlab("Conditions") +
+#   
+#   # geom_signif(
+#   #   comparisons = list(c("Grammatical", "Pseudowords")),
+#   #   margin_top = 0.20,
+#   #   step_increase = 0.05,
+#   #   tip_length = 0.01,
+#   #   map_signif_level = TRUE
+#   # )+
+#   theme_Publication()+
+#  
+#   
+#   
+#   # Add geom_boxplot() to include box plot
+#   geom_boxplot(width = 0.2, fill = "white", color = "blue") 
+#   
+# RT + stat_summary(fun.data=mean_sdl, mult=1, 
+#                  geom="pointrange", color="red")
 
 
 
@@ -147,17 +183,23 @@ ACC_plot<- ggplot(data_group,
   #scale_x_discrete(limits = Conditions) +  facet_wrap( ~Prefix) +
   ylab("% Accept") + 
   xlab("Conditions") +
+  geom_text(aes(label=round(ACC)),vjust=1.6, color="white", size=3.5) +
   theme_Publication()+
+  #theme_minimal() +
+  #theme_clean() +
+  #theme_wsj() +
+  theme_tufte() +
+  geom_hline(aes(yintercept=50), colour="#990000", linetype="dashed") +
   coord_cartesian(ylim = c(0, 75)) +
   # scale_y_continuous(expand = expansion(mult = c(0, 0.05)))+
-  # geom_signif(
-  #   comparisons = list(c("Grammatical", "Pseudowords")),
-  #   margin_top = 0.12,
-  #   step_increase = 0.09,
-  #   tip_length = 0.05,
-  #   annotation = c("***")
-  # )+
-  
+  geom_signif(
+    comparisons = list(c("1e-1i", "1i-2")),
+    margin_top = 0.12,
+    step_increase = 0.09,
+    tip_length = 0.05,
+    annotation = c("***")
+  )+
+
   #geom_errorbar function is used to plot error bars
   geom_errorbar(aes(ymin=ACC-ACC_SE,
                     ymax=ACC+ACC_SE,
@@ -165,9 +207,14 @@ ACC_plot<- ggplot(data_group,
 ```
 
 ```{r}
-ACC_plot
+ACC_plot + labs(title="Accuracy | Condition",
+        x ="Condition", y = "Accuracy")
 ```
 
 ```{r}
 report(ACC_model_1)
+```
+```{r}
+BAN_ACC_Model1.emm <- emmeans(ACC_model_1, ~ Condition, lmer.df = "asymp")
+pairs(BAN_ACC_Model1.emm, simple = "each")
 ```
