@@ -30,6 +30,8 @@ library("report")
 library("Hmisc")
 library("multcomp")
 library("emmeans")
+library("ggpubr")
+library("PupillometryR")
 source('ggplot_theme_Publication-2.R')
 ```
 
@@ -134,12 +136,42 @@ summary(ACC_model_1)
 ```
 
 ```{r}
-ACC_model_2 <- glmer(Accuracy ~ Condition + (1|Subject) , data = HP_data, family = "binomial")
-summary(ACC_model_2)
+HP_data$Condition <-relevel(HP_data$Condition, ref="1e-1i")
+ACC_model_1vsRest <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
+HP_data$Condition <-relevel(HP_data$Condition, ref="1e-2")
+ACC_model_2vsRest <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
+HP_data$Condition <-relevel(HP_data$Condition, ref="1e-3")
+ACC_model_3vsRest <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
+HP_data$Condition <-relevel(HP_data$Condition, ref="1i-2")
+ACC_model_4vsRest <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
+HP_data$Condition <-relevel(HP_data$Condition, ref="1i-3")
+ACC_model_5vsRest <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
+HP_data$Condition <-relevel(HP_data$Condition, ref="2-3")
+ACC_model_6vsRest <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
 ```
 
 ```{r}
-anova(ACC_model_1,ACC_model_2)
+summary(ACC_model_1vsRest)
+```
+
+```{r}
+summary(ACC_model_2vsRest)
+```
+
+```{r}
+summary(ACC_model_3vsRest)
+```
+
+```{r}
+summary(ACC_model_4vsRest)
+```
+
+```{r}
+summary(ACC_model_5vsRest)
+```
+
+```{r}
+summary(ACC_model_6vsRest)
 ```
 
 ## Plot
@@ -175,93 +207,334 @@ Data$Condition <- as.factor(Data$Condition)
 ```
 
 ```{r}
+summary(ACC_model_1vsRest)
+```
+
+```{r}
 library(ggsignif)
 ACC_plot<- ggplot(data_group,
                aes(x=Condition,y=ACC,fill=Condition)) +
   
   # geom_bar function is used to plot bars of barplot
-  geom_bar(stat = "identity", width = 0.7, position = position_dodge(0.7), show.legend = FALSE  )+
+  geom_bar(stat = "identity", width = 1, position = position_dodge(0.1), show.legend = FALSE, alpha=0.5,color="black", size=0.1  )+
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
   #scale_x_discrete(limits = Conditions) +  facet_wrap( ~Prefix) +
-  ylab("% Accept") + 
+  ylab("% Accuracy") + 
   xlab("Conditions") +
-  geom_text(aes(label=round(ACC)),vjust=1.6, color="white", size=3.5) +
+  geom_text(aes(label=round(ACC)),vjust=2.5, color="black", size=5) +
   theme_Publication()+
   #theme_minimal() +
-  #theme_clean() +
+  theme_clean() +
   #theme_wsj() +
-  theme_tufte() +
-  geom_hline(aes(yintercept=50), colour="#990000", linetype="dashed") +
-  coord_cartesian(ylim = c(0, 75)) +
+  #theme_tufte() +
+  geom_hline(aes(yintercept=50), colour="#990000", linetype="twodash", alpha = 2/5) +
+  coord_cartesian(ylim = c(0, 70)) +
   # scale_y_continuous(expand = expansion(mult = c(0, 0.05)))+
-  geom_signif(
-    comparisons = list(c("1e-1i", "1i-2")),
-    margin_top = 0.12,
-    step_increase = 0.09,
-    tip_length = 0.05,
-    annotation = c("** 0.0397")
-  )+
-  geom_signif(
-    comparisons = list(c("1e-3", "1i-2")),
-    margin_top = 0.30,
-    step_increase = 0.09,
-    tip_length = 0.05,
-    annotation = c("** 0.0311")
-  )+
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "1e-3")),
+  #   margin_top = 0.09,
+  #   step_increase = 0.09,
+  #   tip_length = 0.05,
+  #   textsize = 3,
+  #   annotation = c("** 0.003")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "1i-3")),
+  #   margin_top = 0.30,
+  #   step_increase = 0.09,
+  #   tip_length = 0.05,
+  #   textsize = 3,
+  #   annotation = c("* 0.013")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "2-3")),
+  #   margin_top = 0.50,
+  #   step_increase = 0.09,
+  #   tip_length = 0.05,
+  #   textsize = 3,
+  #   annotation = c("* 0.02")
+  # ) +
   #geom_errorbar function is used to plot error bars
   geom_errorbar(aes(ymin=ACC-ACC_SE,
                     ymax=ACC+ACC_SE,
-                 width=0.3))
+                 width=0.3)) +
+  
+  theme(panel.border = element_blank(),
+    axis.text.x = element_text(color = "grey20", size = 16, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+        axis.text.y = element_text(color = "grey20", size = 16, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+        axis.title.x = element_text(color = "grey20", size = 20, angle = 0, hjust = .5, vjust = 0, face = "bold"),
+        axis.title.y = element_text(color = "grey20", size = 20, angle = 90, hjust = .5, vjust = .5, face = "bold"))
+ACC_plot 
 ```
 
 ```{r}
-ACC_plot + labs(title="Accuracy | Condition",
-        x ="Condition", y = "Accuracy")
+
+# ACC_plot + labs(title="Accuracy | Condition",
+#         x ="Condition", y = "Accuracy")
+ggsave(ACC_plot,filename = "Descriptive_Stats.png",dpi=1000, width=7, height = 5)
 ```
 
 ```{r}
-report(ACC_model_1)
+
+DatabyParticipant <- Data %>% group_by(Subject, Condition) %>% summarise(ACC = mean(Accuracy)*100)
+Dist_plot<- ggplot(DatabyParticipant,
+               aes(x=Condition,y=ACC,fill=Condition)) +
+  
+  # Geom Violin + point + boxplo4
+   geom_flat_violin(position = position_nudge(x = .2), 
+                    alpha = .4,
+                    #show.legend = F
+                    ) +
+  
+
+  geom_point(aes(color = Condition),
+             position = position_jitter(w = .05),
+             size = 1,
+             alpha = 0.4,
+             show.legend = F) +
+   geom_boxplot(width = .25, 
+                outlier.shape = NA,
+                alpha = 0.5,
+                show.legend = F
+                ) +
+  
+  ylab("% Accuracy") + 
+  xlab("Conditions") +
+  
+  
+  theme_Publication() +
+  # #theme_minimal() +
+  # #theme_clean() +
+  # #theme_wsj() +
+  # theme_tufte() +
+  geom_hline(aes(yintercept=50), colour="#990000", linetype="twodash", alpha=2/5) +
+  coord_cartesian(ylim = c(0, 100)) +
+  # # scale_y_continuous(expand = expansion(mult = c(0, 0.05)))+
+  
+  geom_signif(
+    comparisons = list(c("1e-1i", "1e-3")),
+    margin_top = -0.95,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("** 0.003")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-1i", "1i-3")),
+    margin_top = -1.17,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("* 0.013")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-1i", "2-3")),
+    margin_top = -1.25,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("* 0.021")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-2", "1e-3")),
+    margin_top = -1.075,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("* 0.019")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-3", "1i-2")),
+    margin_top = -1,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("** 0.003")
+  ) +
+  geom_signif(
+    comparisons = list(c("1i-2", "1i-3")),
+    margin_top = -0.9,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("* 0.011")
+  ) +
+  geom_signif(
+    comparisons = list(c("1i-2", "2-3")),
+    margin_top = -1.075,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("* 0.017")
+  )+
+  theme(panel.border = element_blank(),
+    axis.text.x = element_text(color = "grey20", size = 14, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+        axis.text.y = element_text(color = "grey20", size = 14, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+        axis.title.x = element_text(color = "grey20", size = 20, angle = 0, hjust = .5, vjust = 0, face = "bold"),
+        axis.title.y = element_text(color = "grey20", size = 20, angle = 90, hjust = .5, vjust = .5, face = "bold")
+    )
+#+
+#  geom_text(aes(label=round(data_group$ACC)),hjust=1.6, color="red", size=3.5) +
+  #geom_errorbar function is used to plot error bars
+  # geom_errorbar(aes(ymin=ACC-ACC_SE,
+  #                   ymax=ACC+ACC_SE,
+  #                width=0.3))
+
+#ACC_plot2 + geom_text(aes(label=mean(ACC)),hjust=1.6, color="red", size=3.5)
+Dist_plot + theme(legend.key.height= unit(0.1, 'cm'),
+        legend.key.width= unit(0.1, 'cm'),
+        legend.justification = c(0,1)    
+    # legend.position=c(1,1), 
+     #   legend.justification=c(0, 1) 
+    )
 ```
+
+```{r}
+library(ggplot2)
+library(ggsignif)
+# Assuming DatabyParticipant and other required objects/libraries are already loaded
+
+Dist_plot <- ggplot(DatabyParticipant,
+                    aes(x = Condition, y = ACC, fill = Condition)) +
+  
+  # Geom Violin + point + boxplot
+  geom_flat_violin(position = position_nudge(x = .2), 
+                   alpha = 0.5) +
+  geom_point(aes(color = Condition),
+             position = position_jitter(w = .05),
+             size = 1,
+             alpha = 0.5,
+             show.legend = F) +
+  geom_boxplot(width = .25, 
+               outlier.shape = NA,
+               alpha = 0.4,
+               show.legend = F) +
+  #stat_summary(fun.y=mean, geom="point", shape=20, size=14, color="red", fill="red")+
+   stat_summary(fun=mean,  color="black",fill ="#FF0000",  geom="point", 
+               shape=24, size=1.5, show.legend=FALSE) +
+  
+  ylab("% Accuracy") + 
+  xlab("Conditions") +
+  
+  theme_Publication() +
+  geom_hline(aes(yintercept = 50), colour = "#990000", linetype = "twodash", alpha = 2/5) +
+  coord_cartesian(ylim = c(0, 100)) +
+  
+  geom_signif(
+    comparisons = list(c("1e-1i", "1e-3")),
+    margin_top = -0.95,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("** 0.003")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-1i", "1i-3")),
+    margin_top = -1.17,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.013")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-1i", "2-3")),
+    margin_top = -1.25,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.021")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-2", "1e-3")),
+    margin_top = -1.075,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.019")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-3", "1i-2")),
+    margin_top = -1,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("** 0.003")
+  ) +
+  geom_signif(
+    comparisons = list(c("1i-2", "1i-3")),
+    margin_top = -0.9,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.011")
+  ) +
+  geom_signif(
+    comparisons = list(c("1i-2", "2-3")),
+    margin_top = -1.075,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.017")
+  ) +
+  theme(
+    panel.border = element_blank(),
+    axis.text.x = element_text(color = "grey20", size = 14, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+    axis.text.y = element_text(color = "grey20", size = 14, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+    axis.title.x = element_text(color = "grey20", size = 20, angle = 0, hjust = .5, vjust = 0, face = "bold"),
+    axis.title.y = element_text(color = "grey20", size = 20, angle = 90, hjust = .5, vjust = .5, face = "bold"),
+    legend.position = "right",
+    legend.justification = "center",
+    legend.direction = "vertical",
+    legend.title=element_blank()
+  )
+
+Dist_plot 
+
+```
+
+```{r}
+ggsave(Dist_plot,filename = "Dist_plot.png",dpi=700, width=8, height = 5)
+```
+
+```{r}
+# ACC_plot2 + labs(title="Accuracy | Condition",
+#         x ="Condition", y = "Accuracy")
+# ACC_plot2 + stat_summary(fun.y = mean, geom = "text", label = paste(mean), y.position = "top", nudge_y = 1) 
+```
+
+```{r}
+report(ACC_model_1vsRest)
+```
+
 ```{r}
 BAN_ACC_Model1.emm <- emmeans(ACC_model_1, ~ Condition, lmer.df = "asymp")
 pairs(BAN_ACC_Model1.emm, simple = "each")
 ```
-```{r}
-# library("ggdist")
-# ACC_plot2 <- ggplot(HP_data,aes(x = factor(Condition), y = Accuracy, fill = factor(Condition))) +
-#  # ggplot(data_group,
-#  #               aes(x=Condition,y=ACC,fill=Condition)) +
-#   ylab("% Accept") + 
-#   xlab("Conditions") +
-#   geom_text(aes(label=round(Accuracy)),vjust=1.6, color="white", size=3.5) +
-#   theme_Publication()+
-#   #theme_minimal() +
-#   #theme_clean() +
-#   #theme_wsj() +
-#   theme_tufte() +
-#   geom_hline(aes(yintercept=50), colour="#990000", linetype="dashed") +
-#   coord_cartesian(ylim = c(0, 75)) +
-# stat_halfeye(
-#     # adjust bandwidth
-#     adjust = 0.5,
-#     # move to the right
-#     justification = -0.2,
-#     # remove the slub interval
-#     .width = 0,
-#     point_colour = NA
-#   ) +
-#   geom_boxplot(
-#     width = 0.12,
-#     # removing outliers
-#     outlier.color = NA,
-#     alpha = 0.5
-#   ) +
-#   stat_dots(
-#     # ploting on left side
-#     side = "left",
-#     # adjusting position
-#     justification = 1.1,
-#     # adjust grouping (binning) of observations
-#     binwidth = 0.25
-#   )
-```
-

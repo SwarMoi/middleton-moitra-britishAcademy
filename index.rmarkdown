@@ -1,0 +1,544 @@
+---
+title: "Numbers-Experment-MML"
+subtitle: Behavioural analysis
+author: Swarnendu Moitra
+execute:
+  echo: true
+  error: false
+  warning: false
+  #cache: true
+theme: spacelab  
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    embed-resources: true
+  # pdf:
+  #   toc: true
+  #   number-sections: true
+  #   colorlinks: true
+---
+
+
+Analysis based on Persons experiment: Middleton and Moitra 2023
+
+
+```{r}
+library("tidyverse")
+library("plotrix")
+library("lme4")
+library("lmerTest")
+library("report")
+library("Hmisc")
+library("multcomp")
+library("emmeans")
+source('ggplot_theme_Publication-2.R')
+```
+
+```{r}
+# Load data
+df_slet_1 <- read_csv("data/N72/slet.csv")
+df_98zo_1 <- read_csv("data/N72/98zo.csv")
+df_goty_1 <- read_csv("data/N72/goty.csv")
+df_hebw_1 <- read_csv("data/N72/hebw.csv")
+df_ajpl_1 <- read_csv("data/N72/ajpl.csv")
+df_ld3j_1 <- read_csv("data/N72/ld3j.csv")
+
+df_slet_2 <- read_csv("data/Rest/slet.csv")
+df_98zo_2 <- read_csv("data/Rest/98zo.csv")
+df_goty_2 <- read_csv("data/Rest/goty.csv")
+df_hebw_2 <- read_csv("data/Rest/hebw.csv")
+df_ajpl_2 <- read_csv("data/Rest/ajpl.csv")
+df_ld3j_2 <- read_csv("data/Rest/ld3j.csv")
+
+df_slet_3 <- read_csv("data/Rest_new/slet.csv")
+df_98zo_3 <- read_csv("data/Rest_new/98zo.csv")
+df_goty_3 <- read_csv("data/Rest_new/goty.csv")
+df_hebw_3 <- read_csv("data/Rest_new/hebw.csv")
+df_ajpl_3 <- read_csv("data/Rest_new/ajpl.csv")
+df_ld3j_3 <- read_csv("data/Rest_new/ld3j.csv")
+
+# Custom Function
+data_cleaning <- function(arg1){
+arg1 <- arg1 
+arg1 <- arg1 %>%
+        dplyr::select(`Participant Private ID`,`Trial Number`,'Tree Node Key', 'Reaction Time', Correct,`Spreadsheet: display`,Screen, `Task Name`,`Response Type`) %>%
+        rename(Subject = `Participant Private ID`,
+                   Item = `Trial Number`,
+                   Condition = 'Task Name',
+                   RT = 'Reaction Time',
+                   Accuracy = Correct) %>%
+        filter(Screen == "Testing",
+               `Response Type` == "response") %>%
+        mutate(LogRT = log(RT),
+        Condition = gsub(" B Testing", "", Condition))
+return(arg1)
+}
+
+## Use the custom function to clean the data
+
+df_slet_1 <- data_cleaning(df_slet_1)
+df_98zo_1 <- data_cleaning(df_98zo_1)
+df_goty_1 <- data_cleaning(df_goty_1)
+df_hebw_1 <- data_cleaning(df_hebw_1)
+df_ajpl_1 <- data_cleaning(df_ajpl_1)
+df_ld3j_1 <- data_cleaning(df_ld3j_1)
+
+df_slet_2 <- data_cleaning(df_slet_2)
+df_98zo_2 <- data_cleaning(df_98zo_2)
+df_goty_2 <- data_cleaning(df_goty_2)
+df_hebw_2 <- data_cleaning(df_hebw_2)
+df_ajpl_2 <- data_cleaning(df_ajpl_2)
+df_ld3j_2 <- data_cleaning(df_ld3j_2)
+
+df_slet_3 <- data_cleaning(df_slet_3)
+df_98zo_3 <- data_cleaning(df_98zo_3)
+df_goty_3 <- data_cleaning(df_goty_3)
+df_hebw_3 <- data_cleaning(df_hebw_3)
+df_ajpl_3 <- data_cleaning(df_ajpl_3)
+df_ld3j_3 <- data_cleaning(df_ld3j_3)
+
+data <- rbind(df_slet_1,df_98zo_1,df_goty_1,df_hebw_1,df_ajpl_1,df_ld3j_1,
+              df_slet_2,df_98zo_2,df_goty_2,df_hebw_2,df_ajpl_2,df_ld3j_2,
+              df_slet_3,df_98zo_3,df_goty_3,df_hebw_3,df_ajpl_3,df_ld3j_3
+              )
+
+## Create the summary
+data_group <- data %>% group_by(Condition) %>% summarise(RT_mean=mean(RT),RT_SE=std.error(RT), ACC=mean(Accuracy)*100, ACC_SE=std.error(Accuracy)*100)
+
+Data <- data
+summary(Data)
+```
+
+
+#Stats
+
+
+```{r}
+HP_data <- data %>% 
+  mutate(
+    Subject = as.factor(Subject),
+    Condition = as.factor(Condition),
+    Item = as.factor(Item)
+    #Cond_Type = as.factor(Cond_Type),
+    #Response = as.factor(Response)
+  )
+str(HP_data)
+HP_data$Condition <-relevel(HP_data$Condition, ref="1e-1i")
+```
+
+```{r}
+RT_model_1 <- lmer(LogRT ~ Condition + (1|Subject) + (1|Item), data = HP_data, REML = F)
+summary(RT_model_1)
+```
+
+```{r}
+ACC_model_1 <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
+summary(ACC_model_1)
+```
+
+```{r}
+HP_data$Condition <-relevel(HP_data$Condition, ref="1e-1i")
+ACC_model_1vsRest <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
+HP_data$Condition <-relevel(HP_data$Condition, ref="1e-2")
+ACC_model_2vsRest <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
+HP_data$Condition <-relevel(HP_data$Condition, ref="1e-3")
+ACC_model_3vsRest <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
+HP_data$Condition <-relevel(HP_data$Condition, ref="1i-2")
+ACC_model_4vsRest <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
+HP_data$Condition <-relevel(HP_data$Condition, ref="1i-3")
+ACC_model_5vsRest <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
+HP_data$Condition <-relevel(HP_data$Condition, ref="2-3")
+ACC_model_6vsRest <- glmer(Accuracy ~ Condition + (1|Subject) + (1|Item), data = HP_data, family = "binomial")
+```
+
+```{r}
+summary(ACC_model_1vsRest)
+```
+
+```{r}
+summary(ACC_model_2vsRest)
+```
+
+```{r}
+summary(ACC_model_3vsRest)
+```
+
+```{r}
+summary(ACC_model_4vsRest)
+```
+
+```{r}
+summary(ACC_model_5vsRest)
+```
+
+```{r}
+summary(ACC_model_6vsRest)
+```
+
+
+## Plot
+
+
+```{r}
+Data$Condition <- as.factor(Data$Condition)
+
+
+# RT <- ggplot(Data, aes(x=Condition, y=LogRT)) + 
+#   geom_violin(aes(fill = Condition), trim = FALSE,show.legend = FALSE) +
+#   ylab("Log RT") + 
+#   xlab("Conditions") +
+#   
+#   # geom_signif(
+#   #   comparisons = list(c("Grammatical", "Pseudowords")),
+#   #   margin_top = 0.20,
+#   #   step_increase = 0.05,
+#   #   tip_length = 0.01,
+#   #   map_signif_level = TRUE
+#   # )+
+#   theme_Publication()+
+#  
+#   
+#   
+#   # Add geom_boxplot() to include box plot
+#   geom_boxplot(width = 0.2, fill = "white", color = "blue") 
+#   
+# RT + stat_summary(fun.data=mean_sdl, mult=1, 
+#                  geom="pointrange", color="red")
+
+
+
+```
+
+```{r}
+summary(ACC_model_1vsRest)
+```
+
+```{r}
+library(ggsignif)
+ACC_plot<- ggplot(data_group,
+               aes(x=Condition,y=ACC,fill=Condition)) +
+  
+  # geom_bar function is used to plot bars of barplot
+  geom_bar(stat = "identity", width = 1, position = position_dodge(0.1), show.legend = FALSE, alpha=0.5,color="black", size=0.1  )+
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
+  #scale_x_discrete(limits = Conditions) +  facet_wrap( ~Prefix) +
+  ylab("% Accuracy") + 
+  xlab("Conditions") +
+  geom_text(aes(label=round(ACC)),vjust=2.5, color="black", size=5) +
+  theme_Publication()+
+  #theme_minimal() +
+  theme_clean() +
+  #theme_wsj() +
+  #theme_tufte() +
+  geom_hline(aes(yintercept=50), colour="#990000", linetype="twodash", alpha = 2/5) +
+  coord_cartesian(ylim = c(0, 70)) +
+  # scale_y_continuous(expand = expansion(mult = c(0, 0.05)))+
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "1e-3")),
+  #   margin_top = 0.09,
+  #   step_increase = 0.09,
+  #   tip_length = 0.05,
+  #   textsize = 3,
+  #   annotation = c("** 0.003")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "1i-3")),
+  #   margin_top = 0.30,
+  #   step_increase = 0.09,
+  #   tip_length = 0.05,
+  #   textsize = 3,
+  #   annotation = c("* 0.013")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "2-3")),
+  #   margin_top = 0.50,
+  #   step_increase = 0.09,
+  #   tip_length = 0.05,
+  #   textsize = 3,
+  #   annotation = c("* 0.02")
+  # ) +
+  #geom_errorbar function is used to plot error bars
+  geom_errorbar(aes(ymin=ACC-ACC_SE,
+                    ymax=ACC+ACC_SE,
+                 width=0.3)) +
+  
+  theme(panel.border = element_blank(),
+    axis.text.x = element_text(color = "grey20", size = 16, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+        axis.text.y = element_text(color = "grey20", size = 16, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+        axis.title.x = element_text(color = "grey20", size = 20, angle = 0, hjust = .5, vjust = 0, face = "bold"),
+        axis.title.y = element_text(color = "grey20", size = 20, angle = 90, hjust = .5, vjust = .5, face = "bold"))
+ACC_plot 
+```
+
+```{r}
+library("ggpubr")
+# ACC_plot + labs(title="Accuracy | Condition",
+#         x ="Condition", y = "Accuracy")
+ggsave(ACC_plot,filename = "Descriptive_Stats.png",dpi=300, width=7, height = 5)
+```
+
+```{r}
+library("PupillometryR")
+DatabyParticipant <- Data %>% group_by(Subject, Condition) %>% summarise(ACC = mean(Accuracy)*100)
+Dist_plot<- ggplot(DatabyParticipant,
+               aes(x=Condition,y=ACC,fill=Condition)) +
+  
+  # Geom Violin + point + boxplo4
+   geom_flat_violin(position = position_nudge(x = .2), 
+                    alpha = .4,
+                    #show.legend = F
+                    ) +
+  
+
+  geom_point(aes(color = Condition),
+             position = position_jitter(w = .05),
+             size = 1,
+             alpha = 0.4,
+             show.legend = F) +
+   geom_boxplot(width = .25, 
+                outlier.shape = NA,
+                alpha = 0.5,
+                show.legend = F
+                ) +
+  
+  ylab("% Accuracy") + 
+  xlab("Conditions") +
+  
+  
+  theme_Publication() +
+  # #theme_minimal() +
+  # #theme_clean() +
+  # #theme_wsj() +
+  # theme_tufte() +
+  geom_hline(aes(yintercept=50), colour="#990000", linetype="twodash", alpha=2/5) +
+  coord_cartesian(ylim = c(0, 100)) +
+  # # scale_y_continuous(expand = expansion(mult = c(0, 0.05)))+
+  
+  geom_signif(
+    comparisons = list(c("1e-1i", "1e-3")),
+    margin_top = -0.95,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("** 0.003")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-1i", "1i-3")),
+    margin_top = -1.17,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("* 0.013")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-1i", "2-3")),
+    margin_top = -1.25,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("* 0.021")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-2", "1e-3")),
+    margin_top = -1.075,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("* 0.019")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-3", "1i-2")),
+    margin_top = -1,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("** 0.003")
+  ) +
+  geom_signif(
+    comparisons = list(c("1i-2", "1i-3")),
+    margin_top = -0.9,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("* 0.011")
+  ) +
+  geom_signif(
+    comparisons = list(c("1i-2", "2-3")),
+    margin_top = -1.075,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust=2.3,
+    size= 0.3,
+    textsize = 3,
+    annotation = c("* 0.017")
+  )+
+  theme(panel.border = element_blank(),
+    axis.text.x = element_text(color = "grey20", size = 14, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+        axis.text.y = element_text(color = "grey20", size = 14, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+        axis.title.x = element_text(color = "grey20", size = 20, angle = 0, hjust = .5, vjust = 0, face = "bold"),
+        axis.title.y = element_text(color = "grey20", size = 20, angle = 90, hjust = .5, vjust = .5, face = "bold")
+    )
+#+
+#  geom_text(aes(label=round(data_group$ACC)),hjust=1.6, color="red", size=3.5) +
+  #geom_errorbar function is used to plot error bars
+  # geom_errorbar(aes(ymin=ACC-ACC_SE,
+  #                   ymax=ACC+ACC_SE,
+  #                width=0.3))
+
+#ACC_plot2 + geom_text(aes(label=mean(ACC)),hjust=1.6, color="red", size=3.5)
+Dist_plot + theme(legend.key.height= unit(0.1, 'cm'),
+        legend.key.width= unit(0.1, 'cm'),
+        legend.justification = c(0,1)    
+    # legend.position=c(1,1), 
+     #   legend.justification=c(0, 1) 
+    )
+```
+
+```{r}
+library(ggplot2)
+library(ggsignif)
+# Assuming DatabyParticipant and other required objects/libraries are already loaded
+
+Dist_plot <- ggplot(DatabyParticipant,
+                    aes(x = Condition, y = ACC, fill = Condition)) +
+  
+  # Geom Violin + point + boxplot
+  geom_flat_violin(position = position_nudge(x = .2), 
+                   alpha = 0.5) +
+  geom_point(aes(color = Condition),
+             position = position_jitter(w = .05),
+             size = 1,
+             alpha = 0.5,
+             show.legend = F) +
+  geom_boxplot(width = .25, 
+               outlier.shape = NA,
+               alpha = 0.4,
+               show.legend = F) +
+  #stat_summary(fun.y=mean, geom="point", shape=20, size=14, color="red", fill="red")+
+  
+  ylab("% Accuracy") + 
+  xlab("Conditions") +
+  
+  theme_Publication() +
+  geom_hline(aes(yintercept = 50), colour = "#990000", linetype = "twodash", alpha = 2/5) +
+  coord_cartesian(ylim = c(0, 100)) +
+  
+  geom_signif(
+    comparisons = list(c("1e-1i", "1e-3")),
+    margin_top = -0.95,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("** 0.003")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-1i", "1i-3")),
+    margin_top = -1.17,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.013")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-1i", "2-3")),
+    margin_top = -1.25,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.021")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-2", "1e-3")),
+    margin_top = -1.075,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.019")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-3", "1i-2")),
+    margin_top = -1,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("** 0.003")
+  ) +
+  geom_signif(
+    comparisons = list(c("1i-2", "1i-3")),
+    margin_top = -0.9,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.011")
+  ) +
+  geom_signif(
+    comparisons = list(c("1i-2", "2-3")),
+    margin_top = -1.075,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.017")
+  ) +
+  theme(
+    panel.border = element_blank(),
+    axis.text.x = element_text(color = "grey20", size = 14, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+    axis.text.y = element_text(color = "grey20", size = 14, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+    axis.title.x = element_text(color = "grey20", size = 20, angle = 0, hjust = .5, vjust = 0, face = "bold"),
+    axis.title.y = element_text(color = "grey20", size = 20, angle = 90, hjust = .5, vjust = .5, face = "bold"),
+    legend.position = "right",
+    legend.justification = "center",
+    legend.direction = "vertical",
+    legend.title=element_blank()
+  )
+
+Dist_plot + stat_summary(fun=mean, colour="darkred", geom="point", 
+               shape=18, size=3, show.legend=FALSE)
+
+```
+
+```{r}
+ggsave(Dist_plot,filename = "Dist_plot.png",dpi=300, width=8, height = 5)
+```
+
+```{r}
+# ACC_plot2 + labs(title="Accuracy | Condition",
+#         x ="Condition", y = "Accuracy")
+# ACC_plot2 + stat_summary(fun.y = mean, geom = "text", label = paste(mean), y.position = "top", nudge_y = 1) 
+```
+
+```{r}
+report(ACC_model_1vsRest)
+```
+
+```{r}
+BAN_ACC_Model1.emm <- emmeans(ACC_model_1, ~ Condition, lmer.df = "asymp")
+pairs(BAN_ACC_Model1.emm, simple = "each")
+```
+
