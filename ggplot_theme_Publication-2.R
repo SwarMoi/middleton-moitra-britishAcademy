@@ -36,14 +36,19 @@ theme_Publication <- function(base_size=14, base_family="sans") {
 scale_fill_Publication <- function(...){
       library(scales)
       discrete_scale("fill","Publication",manual_pal(values = c("#386cb0","#f87f01","#7fc97f","#ef3b2c","#feca01","#a6cee3","#fb9a99","#984ea3","#8C591D")), ...)
-      
+
 }
 
 scale_colour_Publication <- function(...){
       library(scales)
       discrete_scale("colour","Publication",manual_pal(values = c("#386cb0","#f87f01","#7fc97f","#ef3b2c","#feca01","#a6cee3","#fb9a99","#984ea3","#8C591D")), ...)
-      
+
 }
+
+
+########
+
+
 
 
 ### Dark theme for ggplot plots

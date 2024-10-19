@@ -32,6 +32,8 @@ library("multcomp")
 library("emmeans")
 library("ggpubr")
 library("PupillometryR")
+library("ggplot2")
+library("ggsignif")
 source('ggplot_theme_Publication-2.R')
 ```
 
@@ -403,9 +405,9 @@ Dist_plot + theme(legend.key.height= unit(0.1, 'cm'),
     )
 ```
 
+
+
 ```{r}
-library(ggplot2)
-library(ggsignif)
 # Assuming DatabyParticipant and other required objects/libraries are already loaded
 
 Dist_plot <- ggplot(DatabyParticipant,
@@ -524,11 +526,628 @@ Dist_plot
 ggsave(Dist_plot,filename = "Dist_plot.png",dpi=700, width=8, height = 5)
 ```
 
+# Main Bare Plot
+
+```{r}
+
+Bare_plot <- ggplot(DatabyParticipant,
+                    aes(x = Condition, y = ACC, fill = Condition)) +
+  
+  # Geom Violin + point + boxplot
+  geom_flat_violin(position = position_nudge(x = .2), 
+                   alpha = 0.5) +
+  geom_point(aes(color = Condition),
+             position = position_jitter(w = .05),
+             size = 1,
+             alpha = 0.5,
+             show.legend = F) +
+  geom_boxplot(width = .25, 
+               outlier.shape = NA,
+               alpha = 0.4,
+               show.legend = F) +
+  #stat_summary(fun.y=mean, geom="point", shape=20, size=14, color="red", fill="red")+
+   stat_summary(fun=mean,  color="black",fill ="#FF0000",  geom="point", 
+               shape=24, size=1.5, show.legend=FALSE) +
+  
+  ylab("% Accuracy") + 
+  xlab("Conditions") +
+  
+  theme_Publication() +
+  geom_hline(aes(yintercept = 50), colour = "#990000", linetype = "twodash", alpha = 2/5) +
+  coord_cartesian(ylim = c(20, 100)) +
+  
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "1e-3")),
+  #   margin_top = -0.95,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("** 0.003")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "1i-3")),
+  #   margin_top = -1.17,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.013")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "2-3")),
+  #   margin_top = -1.25,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.021")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-2", "1e-3")),
+  #   margin_top = -1.075,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.019")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-3", "1i-2")),
+  #   margin_top = -1,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("** 0.003")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1i-2", "1i-3")),
+  #   margin_top = -0.9,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.011")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1i-2", "2-3")),
+  #   margin_top = -1.075,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.017")
+  # ) +
+  theme(
+    panel.border = element_blank(),
+    axis.text.x = element_text(color = "grey20", size = 14, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+    axis.text.y = element_text(color = "grey20", size = 14, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+    axis.title.x = element_text(color = "grey20", size = 20, angle = 0, hjust = .5, vjust = 0, face = "bold"),
+    axis.title.y = element_text(color = "grey20", size = 20, angle = 90, hjust = .5, vjust = .5, face = "bold"),
+    legend.position = "right",
+    legend.justification = "center",
+    legend.direction = "vertical",
+    legend.title=element_blank()
+  )
+
+Bare_plot
+```
+
+# Baseline (1e-1i)
+
+
+```{r}
+
+Baseline_plot <- ggplot(DatabyParticipant,
+                    aes(x = Condition, y = ACC, fill = Condition)) +
+  
+  # Geom Violin + point + boxplot
+  geom_flat_violin(position = position_nudge(x = .2), 
+                   #alpha = 0.5
+                   ) +
+  geom_point(aes(color = Condition),
+             position = position_jitter(w = .05),
+             size = 1,
+             alpha = 0.5,
+             show.legend = F) +
+  geom_boxplot(width = .25, 
+               outlier.shape = NA,
+               alpha = 0.4,
+               show.legend = F) +
+  #stat_summary(fun.y=mean, geom="point", shape=20, size=14, color="red", fill="red")+
+   stat_summary(fun=mean,  color="black",fill ="#FF0000",  geom="point", 
+               shape=24, size=1.5, show.legend=FALSE) +
+  
+  ylab("% Accuracy") + 
+  xlab("Conditions") +
+  
+  theme_Publication() +
+  geom_hline(aes(yintercept = 50), colour = "#990000", linetype = "twodash", alpha = 2/5) +
+  coord_cartesian(ylim = c(0, 100)) +
+  
+  geom_signif(
+    comparisons = list(c("1e-1i", "1e-3")),
+    margin_top = -0.97,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.4,
+    textsize = 3.8,
+    annotation = c("** 0.003")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-1i", "1i-3")),
+    margin_top = -1.10,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.4,
+    textsize = 3.8,
+    annotation = c("* 0.013")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-1i", "2-3")),
+    margin_top = -1.21,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.4,
+    textsize = 3.8,
+    annotation = c("* 0.021")
+  ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-2", "1e-3")),
+  #   margin_top = -1.075,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.019")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-3", "1i-2")),
+  #   margin_top = -1,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("** 0.003")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1i-2", "1i-3")),
+  #   margin_top = -0.9,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.011")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1i-2", "2-3")),
+  #   margin_top = -1.075,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.017")
+  # ) +
+  theme(
+    panel.border = element_blank(),
+    axis.text.x = element_text(color = "grey20", size = 14, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+    axis.text.y = element_text(color = "grey20", size = 14, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+    axis.title.x = element_text(color = "grey20", size = 20, angle = 0, hjust = .5, vjust = 0, face = "bold"),
+    axis.title.y = element_text(color = "grey20", size = 20, angle = 90, hjust = .5, vjust = .5, face = "bold"),
+    legend.position = "right",
+    legend.justification = "center",
+    legend.direction = "vertical",
+    legend.title=element_blank()
+  )
+
+Baseline_plot
+```
+
+
+#SubPlots
+
+
+## Baseline 1i-2
+```{r}
+data_baseline_1i_2 <- DatabyParticipant %>% filter(Condition=="1e-3"| Condition=="1i-2")  
+
+
+Baseline_plot_1i_2 <- ggplot(data_baseline_1i_2,
+                    aes(x = Condition, y = ACC, fill = Condition)) +
+  
+  # Geom Violin + point + boxplot
+  geom_flat_violin(position = position_nudge(x = .2), 
+                   #alpha = 0.5
+                   ) +
+  geom_point(aes(color = Condition),
+             position = position_jitter(w = .05),
+             size = 1,
+             alpha = 0.5,
+             show.legend = F) +
+  geom_boxplot(width = .25, 
+               outlier.shape = NA,
+               alpha = 0.4,
+               show.legend = F) +
+  #stat_summary(fun.y=mean, geom="point", shape=20, size=14, color="red", fill="red")+
+   stat_summary(fun=mean,  color="black",fill ="#FF0000",  geom="point", 
+               shape=24, size=1.5, show.legend=FALSE) +
+  
+  ylab("% Accuracy") + 
+  xlab("Conditions") +
+  
+  theme_Publication() +
+  
+  geom_hline(aes(yintercept = 50), colour = "#990000", linetype = "twodash", alpha = 2/5) +
+  coord_cartesian(ylim = c(0, 100)) +
+  
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "1e-3")),
+  #   margin_top = -0.97,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.4,
+  #   textsize = 3.8,
+  #   annotation = c("** 0.003")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "1i-3")),
+  #   margin_top = -1.10,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.4,
+  #   textsize = 3.8,
+  #   annotation = c("* 0.013")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "2-3")),
+  #   margin_top = -1.21,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.4,
+  #   textsize = 3.8,
+  #   annotation = c("* 0.021")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-2", "1e-3")),
+  #   margin_top = -1.075,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.019")
+  # ) +
+  geom_signif(
+    comparisons = list(c("1e-3", "1i-2")),
+    margin_top = -1.25,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 4.5,
+    annotation = c("** 0.003")
+  ) +
+  # geom_signif(
+  #   comparisons = list(c("1i-2", "1i-3")),
+  #   margin_top = -0.9,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.011")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1i-2", "2-3")),
+  #   margin_top = -1.075,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.017")
+  # ) +
+  theme(
+    panel.border = element_blank(),
+    axis.text.x = element_text(color = "grey20", size = 14, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+    axis.text.y = element_text(color = "grey20", size = 14, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+    axis.title.x = element_text(color = "grey20", size = 20, angle = 0, hjust = .5, vjust = 0, face = "bold"),
+    axis.title.y = element_text(color = "grey20", size = 20, angle = 90, hjust = .5, vjust = .5, face = "bold"),
+    legend.position = "right",
+    legend.justification = "center",
+    legend.direction = "vertical",
+    legend.title=element_blank()
+  )
+
+BaselinePlot_1<- Baseline_plot_1i_2  + scale_color_manual(values = c("#B79F00","#00BA38")) +
+  scale_fill_manual(values = c("#B79F00","#00BA38"))  + scale_y_continuous(limits = c(0, NA),
+                     expand = expansion(mult = c(0, 0.1))) + scale_x_discrete(expand = c(0.35, 0.35))
+
+
+BaselinePlot_1
+```
+
+## Baseline 1e-1i
+Third graph: 1e-1i and 2-3, p-value, baseline 
+
+
+```{r}
+data_baseline_1e_1i <- DatabyParticipant %>% filter(Condition=="1e-1i"| Condition=="2-3")  
+
+
+Baseline_plot_1e_1i <- ggplot(data_baseline_1e_1i,
+                    aes(x = Condition, y = ACC, fill = Condition)) +
+  
+  # Geom Violin + point + boxplot
+  geom_flat_violin(position = position_nudge(x = .2), 
+                   #alpha = 0.5
+                   ) +
+  geom_point(aes(color = Condition),
+             position = position_jitter(w = .05),
+             size = 1,
+             alpha = 0.5,
+             show.legend = F) +
+  geom_boxplot(width = .25, 
+               outlier.shape = NA,
+               alpha = 0.4,
+               show.legend = F) +
+  #stat_summary(fun.y=mean, geom="point", shape=20, size=14, color="red", fill="red")+
+   stat_summary(fun=mean,  color="black",fill ="#FF0000",  geom="point", 
+               shape=24, size=1.5, show.legend=FALSE) +
+  
+  ylab("% Accuracy") + 
+  xlab("Conditions") +
+  
+  theme_Publication() +
+  
+  geom_hline(aes(yintercept = 50), colour = "#990000", linetype = "twodash", alpha = 2/5) +
+  coord_cartesian(ylim = c(0, 100)) +
+  
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "1e-3")),
+  #   margin_top = -0.97,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.4,
+  #   textsize = 3.8,
+  #   annotation = c("** 0.003")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-1i", "1i-3")),
+  #   margin_top = -1.10,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.4,
+  #   textsize = 3.8,
+  #   annotation = c("* 0.013")
+  # ) +
+  geom_signif(
+    comparisons = list(c("1e-1i", "2-3")),
+    margin_top = -1.2,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.4,
+    textsize = 3.8,
+    annotation = c("* 0.021")
+  ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-2", "1e-3")),
+  #   margin_top = -1.075,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.019")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1e-3", "1i-2")),
+  #   margin_top = -1.25,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 4.5,
+  #   annotation = c("** 0.003")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1i-2", "1i-3")),
+  #   margin_top = -0.9,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.011")
+  # ) +
+  # geom_signif(
+  #   comparisons = list(c("1i-2", "2-3")),
+  #   margin_top = -1.075,
+  #   step_increase = -0.09,
+  #   tip_length = -0.02,
+  #   vjust = 2.3,
+  #   size = 0.3,
+  #   textsize = 3,
+  #   annotation = c("* 0.017")
+  # ) +
+  theme(
+    panel.border = element_blank(),
+    axis.text.x = element_text(color = "grey20", size = 14, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+    axis.text.y = element_text(color = "grey20", size = 14, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+    axis.title.x = element_text(color = "grey20", size = 20, angle = 0, hjust = .5, vjust = 0, face = "bold"),
+    axis.title.y = element_text(color = "grey20", size = 20, angle = 90, hjust = .5, vjust = .5, face = "bold"),
+    legend.position = "right",
+    legend.justification = "center",
+    legend.direction = "vertical",
+    legend.title=element_blank()
+  )
+
+BaselinePlot_2<- Baseline_plot_1e_1i  + scale_color_manual(values = c("#F8766D","#F564E3")) +
+  scale_fill_manual(values = c("#F8766D","#F564E3")) + scale_y_continuous(limits = c(0, NA),
+                     expand = expansion(mult = c(0, 0.1))) + scale_x_discrete(expand = c(0.35, 0.35))
+
+
+BaselinePlot_2
+```
+
+```{r}
+# Assuming DatabyParticipant and other required objects/libraries are already loaded
+
+Dist_plot <- ggplot(DatabyParticipant,
+                    aes(x = Condition, y = ACC, fill = Condition)) +
+  
+  # Geom Violin + point + boxplot
+  geom_flat_violin(position = position_nudge(x = .2), 
+                   alpha = 0.5) +
+  geom_point(aes(color = Condition),
+             position = position_jitter(w = .05),
+             size = 1,
+             alpha = 0.5,
+             show.legend = F) +
+  geom_boxplot(width = .25, 
+               outlier.shape = NA,
+               alpha = 0.4,
+               show.legend = F) +
+  
+  # Mean summary
+  stat_summary(fun=mean, color="black", fill="#FF0000", geom="point", 
+               shape=24, size=1.5, show.legend=FALSE) +
+  
+  ylab("% Accuracy") + 
+  xlab("Conditions") +
+  
+  theme_Publication() +
+  geom_hline(aes(yintercept = 50), colour = "#990000", linetype = "twodash", alpha = 2/5) +
+  coord_cartesian(ylim = c(0, 100)) +
+  
+  # Adding significance annotations as in your example
+  geom_signif(
+    comparisons = list(c("1e-1i", "1e-3")),
+    margin_top = -0.95,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("** 0.003")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-1i", "1i-3")),
+    margin_top = -1.17,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.013")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-1i", "2-3")),
+    margin_top = -1.25,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.021")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-2", "1e-3")),
+    margin_top = -1.075,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.019")
+  ) +
+  geom_signif(
+    comparisons = list(c("1e-3", "1i-2")),
+    margin_top = -1,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("** 0.003")
+  ) +
+  geom_signif(
+    comparisons = list(c("1i-2", "1i-3")),
+    margin_top = -0.9,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.011")
+  ) +
+  geom_signif(
+    comparisons = list(c("1i-2", "2-3")),
+    margin_top = -1.075,
+    step_increase = -0.09,
+    tip_length = -0.02,
+    vjust = 2.3,
+    size = 0.3,
+    textsize = 3,
+    annotation = c("* 0.017")
+  ) +
+  
+  # Faceting to create subplots by the "Group" variable
+  #facet_wrap(~ Group) +
+  
+  theme(
+    panel.border = element_blank(),
+    axis.text.x = element_text(color = "grey20", size = 14, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+    axis.text.y = element_text(color = "grey20", size = 14, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+    axis.title.x = element_text(color = "grey20", size = 20, angle = 0, hjust = .5, vjust = 0, face = "bold"),
+    axis.title.y = element_text(color = "grey20", size = 20, angle = 90, hjust = .5, vjust = .5, face = "bold"),
+    legend.position = "right",
+    legend.justification = "center",
+    legend.direction = "vertical",
+    legend.title=element_blank()
+  )
+
+Dist_plot
+
+```
+
+
 ```{r}
 # ACC_plot2 + labs(title="Accuracy | Condition",
 #         x ="Condition", y = "Accuracy")
 # ACC_plot2 + stat_summary(fun.y = mean, geom = "text", label = paste(mean), y.position = "top", nudge_y = 1) 
 ```
+
+## Save Plots
+```{r}
+ggsave(Bare_plot,filename = "Bare_plot.png",dpi=700, width=8, height = 5)
+ggsave(Baseline_plot,filename = "Baseline_plot.png",dpi=700, width=8, height = 5)
+
+ggsave(BaselinePlot_2,filename = "BaselinePlot_2.png",dpi=700, width=5, height = 5)
+ggsave(BaselinePlot_1,filename = "BaselinePlot_1.png",dpi=700, width=5, height = 5)
+```
+
 
 ```{r}
 report(ACC_model_1vsRest)
